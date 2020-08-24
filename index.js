@@ -27,9 +27,9 @@ var _getAllFilesFromFolder = function (dir, folderIndex) {
       total += parseInt(num);
       console.log(total);
 
-      // console.log(
-      //   index + " " + arr.length + " " + folderIndex + " " + folders.length
-      // );
+      console.log(
+        index + " " + arr.length + " " + folderIndex + " " + folders.length
+      );
 
       if (index == 0 && folderIndex == 0) {
         console.log("Sending mail with total: " + total);
