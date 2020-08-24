@@ -2,7 +2,11 @@ var filesystem = require("fs");
 
 var request = require("request");
 
-var folders = ["../dothi.net", "../muaban.net", "../nhattao.com"];
+var folders = [
+  "../data/dothi.net",
+  "../data/muaban.net",
+  "../data/nhattao.com",
+];
 
 var total = 0;
 
