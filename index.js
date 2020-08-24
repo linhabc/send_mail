@@ -3,9 +3,9 @@ var filesystem = require("fs");
 var request = require("request");
 
 var folders = [
-  "../data/dothi.net",
-  "../data/muaban.net",
-  "../data/nhattao.com",
+  "../data/dothi.net/output",
+  "../data/muaban.net/output",
+  "../data/nhattao.com/output",
 ];
 
 var total = 0;
