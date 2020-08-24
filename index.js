@@ -22,6 +22,9 @@ var _getAllFilesFromFolder = function (dir, folderIndex) {
 
     var count = 0;
 
+    console.log(
+      index + " " + arr.length + " " + folderIndex + " " + folders.length
+    );
     var i;
     filesystem
       .createReadStream(file)
