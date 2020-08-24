@@ -38,7 +38,8 @@ var _getAllFilesFromFolder = function (dir, folderIndex) {
             uri: "http://10.4.200.20:5005/api/v1/send-mail",
             method: "POST",
             json: {
-              send_to: "hau.nguyentat@mobifone.vn",
+              // send_to: "hau.nguyentat@mobifone.vn",
+              send_to: "jonathanrocrach2@gmail.com",
               cc: "jonathanrocrach2@gmail.com",
               subject: "[Cảnh báo hệ thống]",
               content: "Total crawled phone numbers: " + total,
