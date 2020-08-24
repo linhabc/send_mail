@@ -2,6 +2,8 @@ var filesystem = require("fs");
 
 var request = require("request");
 
+var exec = require("child_process").exec;
+
 var folders = [
   "../data/dothi.net/output",
   "../data/muaban.net/output",
@@ -20,43 +22,36 @@ var _getAllFilesFromFolder = function (dir, folderIndex) {
 
     if (!file.match(regex)) return;
 
-    var count = 0;
+    exec("wc -l " + file, function (_, result) {
+      let num = result.split(" ")[0];
+      total += parseInt(num);
+      console.log(total);
 
-    console.log(
-      index + " " + arr.length + " " + folderIndex + " " + folders.length
-    );
-    var i;
-    filesystem
-      .createReadStream(file)
-      .on("data", function (chunk) {
-        for (i = 0; i < chunk.length; ++i) if (chunk[i] == 10) count++;
-      })
-      .on("end", function () {
-        total += count;
-        // console.log(file + " : " + count);
+      // console.log(
+      //   index + " " + arr.length + " " + folderIndex + " " + folders.length
+      // );
 
-        // send mail here
-        if (index == arr.length - 1 && folderIndex == folders.length - 1) {
-          console.log("Sending mail with total: " + total);
-          var options = {
-            uri: "http://10.4.200.20:5005/api/v1/send-mail",
-            method: "POST",
-            json: {
-              // send_to: "hau.nguyentat@mobifone.vn",
-              send_to: "jonathanrocrach2@gmail.com",
-              cc: "jonathanrocrach2@gmail.com",
-              subject: "[Cảnh báo hệ thống]",
-              content: "Total crawled phone numbers: " + total,
-            },
-          };
-          request(options, function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-              console.log(body);
-            }
-            if (error) console.log("error:" + error);
-          });
-        }
-      });
+      if (index == 0 && folderIndex == 0) {
+        console.log("Sending mail with total: " + total);
+        var options = {
+          uri: "http://10.4.200.20:5005/api/v1/send-mail",
+          method: "POST",
+          json: {
+            // send_to: "hau.nguyentat@mobifone.vn",
+            send_to: "jonathanrocrach2@gmail.com",
+            cc: "jonathanrocrach2@gmail.com",
+            subject: "[Cảnh báo hệ thống]",
+            content: "Total crawled phone numbers: " + total,
+          },
+        };
+        request(options, function (error, response, body) {
+          if (!error && response.statusCode == 200) {
+            console.log(body);
+          }
+          if (error) console.log("error:" + error);
+        });
+      }
+    });
 
     if (stat && stat.isDirectory()) {
       results = results.concat(_getAllFilesFromFolder(file));
