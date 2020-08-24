@@ -30,7 +30,8 @@ var _getAllFilesFromFolder = function (dir, folderIndex) {
       })
       .on("end", function () {
         total += count;
-        console.log(file + " : " + count);
+        // console.log(file + " : " + count);
+
         // send mail here
         if (index == arr.length - 1 && folderIndex == folders.length - 1) {
           console.log("Sending mail with total: " + total);
