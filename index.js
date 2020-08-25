@@ -1,8 +1,10 @@
 var filesystem = require("fs");
-
 var request = require("request");
-
 var exec = require("child_process").exec;
+
+const util = require("util");
+
+const readdir = util.promisify(filesystem.readdir);
 
 var folders = [
   "../data/dothi.net/output",
@@ -12,10 +14,12 @@ var folders = [
 
 var total = 0;
 
-var _getAllFilesFromFolder = function (dir, folderIndex) {
+var _getAllFilesFromFolder = async function (dir, folderIndex) {
   var results = [];
 
-  filesystem.readdirSync(dir).forEach(function (file, index, arr) {
+  var res = await readdir(dir);
+
+  res.forEach(function (file, index, arr) {
     file = dir + "/" + file;
     var stat = filesystem.statSync(file);
     var regex = new RegExp("json$");
@@ -31,7 +35,7 @@ var _getAllFilesFromFolder = function (dir, folderIndex) {
         index + " " + arr.length + " " + folderIndex + " " + folders.length
       );
 
-      if (index == 0 && folderIndex == 0) {
+      if (index == arr.length - 1 && folderIndex == folders.length - 1) {
         console.log("Sending mail with total: " + total);
         var options = {
           uri: "http://10.4.200.20:5005/api/v1/send-mail",
@@ -60,6 +64,11 @@ var _getAllFilesFromFolder = function (dir, folderIndex) {
 
   return results;
 };
+
+// setTimeout(() => {
+//   // = total;
+//   console.log("total: " + process.env["L_TOTAL"]);
+// }, 3000);
 
 folders.forEach((fileName, folderIndex) => {
   _getAllFilesFromFolder(fileName, folderIndex);
