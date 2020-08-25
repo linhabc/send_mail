@@ -63,7 +63,7 @@ var _getAllFilesFromFolder = async function (dir, folderIndex) {
 
 setTimeout(async () => {
   var time = Date(Date.now());
-  var old = await readLastLines.read("./history.txt", 1);
+  var old = await readLastLines.read("/u01/send_mail/history.txt", 1);
 
   old = old.split(" ___ ")[0];
 
