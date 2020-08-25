@@ -5,6 +5,7 @@ var exec = require("child_process").exec;
 const util = require("util");
 
 const readdir = util.promisify(filesystem.readdir);
+const readLastLines = require("read-last-lines");
 
 var folders = [
   "../data/dothi.net/output",
@@ -29,11 +30,6 @@ var _getAllFilesFromFolder = async function (dir, folderIndex) {
     exec("wc -l " + file, function (_, result) {
       let num = result.split(" ")[0];
       total += parseInt(num);
-      console.log(total);
-
-      console.log(
-        index + " " + arr.length + " " + folderIndex + " " + folders.length
-      );
 
       // if (index == arr.length - 1 && folderIndex == folders.length - 1) {
       //   console.log("Sending mail with total: " + total);
@@ -65,10 +61,25 @@ var _getAllFilesFromFolder = async function (dir, folderIndex) {
   return results;
 };
 
-setTimeout(() => {
-  // = total;
+setTimeout(async () => {
+  var time = Date(Date.now());
+  var old = await readLastLines.read("./history.txt", 1);
 
-  console.log("Sending mail with total: " + total);
+  old = old.split(" ___ ")[0];
+
+  filesystem.appendFile(
+    "./history.txt",
+    "\n" + total.toString() + " ___ " + time.toString(),
+    function (_) {
+      console.log("Saved!");
+    }
+  );
+
+  old = total - old;
+
+  console.log(
+    "Sending mail with total: " + total + ", " + old + " more records"
+  );
   var options = {
     uri: "http://10.4.200.20:5005/api/v1/send-mail",
     method: "POST",
@@ -77,7 +88,12 @@ setTimeout(() => {
       send_to: "jonathanrocrach2@gmail.com",
       cc: "jonathanrocrach2@gmail.com",
       subject: "[Cảnh báo hệ thống]",
-      content: "Total crawled phone numbers: " + total,
+      content:
+        "Total crawled phone numbers " +
+        total +
+        ", with" +
+        old +
+        " more records",
     },
   };
   request(options, function (error, response, body) {
@@ -88,7 +104,7 @@ setTimeout(() => {
   });
 
   console.log("total: " + total);
-}, 10000);
+}, 1000);
 
 folders.forEach((fileName, folderIndex) => {
   _getAllFilesFromFolder(fileName, folderIndex);
