@@ -8,9 +8,9 @@ const readdir = util.promisify(filesystem.readdir);
 const readLastLines = require("read-last-lines");
 
 var folders = [
-  "../data/dothi.net/output",
-  "../data/muaban.net/output",
-  "../data/nhattao.com/output",
+  "/u01/data/dothi.net/output",
+  "/u01/data/muaban.net/output",
+  "/u01/data/nhattao.com/output",
 ];
 
 var total = 0;
