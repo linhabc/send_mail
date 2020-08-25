@@ -68,7 +68,7 @@ setTimeout(async () => {
   old = old.split(" ___ ")[0];
 
   filesystem.appendFile(
-    "./history.txt",
+    "/u01/send_mail/history.txt",
     "\n" + total.toString() + " ___ " + time.toString(),
     function (_) {
       console.log("Saved!");
@@ -84,8 +84,8 @@ setTimeout(async () => {
     uri: "http://10.4.200.20:5005/api/v1/send-mail",
     method: "POST",
     json: {
-      // send_to: "hau.nguyentat@mobifone.vn",
-      send_to: "jonathanrocrach2@gmail.com",
+      send_to: "hau.nguyentat@mobifone.vn",
+      // send_to: "jonathanrocrach2@gmail.com",
       cc: "jonathanrocrach2@gmail.com",
       subject: "[Báo cáo hệ thống]",
       content:
